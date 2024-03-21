@@ -14,14 +14,16 @@ export const studentRoute = new Elysia().group('/student', app =>
     )
     .post(
       '/login',
-      async ({ body, cookie: { bizmates_student_token }, jwt, set, authRepository }) => {
+      async ({ body, cookie: { student_access_token }, jwt, set, authRepository }) => {
         const result = await authRepository.login(body)
+
         if (!result.success) {
           set.status = 400
           return {
             message: result.message,
           }
         }
+
         const iat = Math.floor(Date.now() / 1000)
 
         const token = await jwt.sign({
@@ -30,7 +32,7 @@ export const studentRoute = new Elysia().group('/student', app =>
           sub: result.student.student_id,
         })
 
-        bizmates_student_token.set({
+        student_access_token.set({
           httpOnly: true,
           maxAge: process.env.EXPIRATION_TIME,
           value: token,

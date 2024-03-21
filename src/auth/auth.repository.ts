@@ -12,8 +12,10 @@ type Result =
       message: string
     }
 
+type Optional = 'student_id' | 'status'
+
 export const AuthRepository = {
-  async login(student: Omit<Student, 'student_id'>): Promise<Result> {
+  async login(student: Omit<Student, Optional>): Promise<Result> {
     if (student.email == 'example@gmail.com' && student.password == 'password') {
       return {
         success: true,
@@ -21,6 +23,7 @@ export const AuthRepository = {
           student_id: '183829',
           email: student.email,
           password: 'password',
+          status: true,
         },
         message: 'Login successful',
       }
