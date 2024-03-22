@@ -39,4 +39,5 @@ Now you'll need to pick a host to deploy it to.
 
 > [!TIP]
 > Test the POST request from the terminal.
+>
 > `curl -X POST -d "email=example@gmail.com&password=password" localhost:36666/student/login`

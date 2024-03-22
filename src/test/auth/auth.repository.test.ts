@@ -10,6 +10,7 @@ describe('AuthRepository', () => {
         student_id: '183829',
         email: 'example@gmail.com',
         password: 'password',
+        status: true,
       }
 
       const result = await AuthRepository.login(validStudent)
@@ -24,6 +25,7 @@ describe('AuthRepository', () => {
         student_id: 'S000124',
         email: 'wrong.email@domain.com',
         password: 'wrongpassword',
+        status: false,
       }
 
       const result = await AuthRepository.login(invalidStudent)

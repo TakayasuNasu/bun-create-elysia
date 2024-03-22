@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model student {
+  id             Int      @id  @default(autoincrement()) @map("student_id")
+  name           String   
+  nickname       String?  
+  skypeName      String?  @unique @map("skype_name")
+  email          String   @unique
+  password       String   
+  status         Int
+  contractType   Int      @default(0) @map("contract_type")
+  rankId         Int      @map("rank_id")
+  levelId        Int      @map("level_id")
+  facebook_uid   String?  @unique
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("trn_student")
+}
