@@ -18,7 +18,6 @@ model student {
   contractType   Int      @default(0) @map("contract_type")
   rankId         Int      @map("rank_id")
   levelId        Int      @map("level_id")
-  facebook_uid   String?  @unique
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 

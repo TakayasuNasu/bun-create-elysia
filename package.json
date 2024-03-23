@@ -1,0 +1,29 @@
+{
+  "name": "eliysia-auth-sample",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@elysiajs/jwt": "^1.0.2",
+    "@prisma/client": "^5.11.0",
+    "elysia": "latest",
+    "prisma": "^5.11.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "bun-types": "latest",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5"
+  },
+  "module": "src/index.js"
+}
