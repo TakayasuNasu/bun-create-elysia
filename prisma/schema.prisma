@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model student {
+model Student {
   id             Int      @id  @default(autoincrement()) @map("student_id")
   name           String   
   nickname       String?  
