@@ -2,6 +2,7 @@ import { jwt } from '@elysiajs/jwt'
 import { Elysia, t } from 'elysia'
 
 import { configure } from '@/configure'
+import { findStudentByEmail } from '@/models/student'
 
 export const studentRoute = new Elysia().group('/student', app =>
   app
@@ -14,22 +15,30 @@ export const studentRoute = new Elysia().group('/student', app =>
     )
     .post(
       '/login',
-      async ({ body, cookie: { student_access_token }, jwt, set, authRepository }) => {
+      async ({
+        body,
+        cookie: { student_access_token, student_refresh_token },
+        jwt,
+        set,
+        authRepository,
+      }) => {
         const result = await authRepository.login(body)
 
-        if (!result.success) {
+        if (!result) {
           set.status = 400
           return {
-            message: result.message,
+            message: 'Student could not be found',
           }
         }
+
+        const student = await findStudentByEmail(body.email)
 
         const iat = Math.floor(Date.now() / 1000)
 
         const token = await jwt.sign({
           iat: iat,
           exp: iat + process.env.EXPIRATION_TIME,
-          sub: result.student.student_id,
+          sub: String(student?.id),
         })
 
         student_access_token.set({
@@ -38,8 +47,14 @@ export const studentRoute = new Elysia().group('/student', app =>
           value: token,
         })
 
+        student_refresh_token.set({
+          httpOnly: true,
+          maxAge: process.env.EXPIRATION_WEEK,
+          value: token,
+        })
+
         return {
-          student: `student_id: ${result.student.student_id} successfully logged in`,
+          student: `student_id: ${student?.id} successfully logged in`,
         }
       },
       {

@@ -1,37 +1,29 @@
-import { Student } from '@/auth/auth.model'
+import { PrismaClient } from '@prisma/client'
 
-type Result =
-  | {
-      success: true
-      student: Student
-      message: string
-    }
-  | {
-      success: false
-      student: null
-      message: string
-    }
+export interface Iauthenticate {
+  (email: string, password: string): Promise<boolean>
+}
 
-type Optional = 'student_id' | 'status'
+export const authenticate: Iauthenticate = async (email, password) => {
+  const db = new PrismaClient()
+  const student = await db.student.findUnique({
+    where: {
+      email: email,
+    },
+  })
+
+  if (!student) return false
+
+  if (student.password !== password) return false
+
+  return true
+}
 
 export const AuthRepository = {
-  async login(student: Omit<Student, Optional>): Promise<Result> {
-    if (student.email == 'example@gmail.com' && student.password == 'password') {
-      return {
-        success: true,
-        student: {
-          student_id: '183829',
-          email: student.email,
-          password: 'password',
-          status: true,
-        },
-        message: 'Login successful',
-      }
-    }
-    return {
-      success: false,
-      student: null,
-      message: 'Not found.',
-    }
+  async login(
+    student: { email: string; password: string },
+    auth: Iauthenticate = authenticate,
+  ): Promise<boolean> {
+    return await auth(student.email, student.password)
   },
 }
